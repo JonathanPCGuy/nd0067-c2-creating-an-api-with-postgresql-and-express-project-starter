@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import client from './database'
 import { PoolClient } from 'pg'
+import booksRoute from './routes/api/books/bookroute'
 
 
 const app: express.Application = express()
@@ -11,6 +12,8 @@ const address: string = "0.0.0.0:3000"
 client.connect();
 
 app.use(bodyParser.json())
+
+app.use('/api/books', booksRoute);
 
 app.get('/', function (req: Request, res: Response) {
     //client.connect().then(func)
