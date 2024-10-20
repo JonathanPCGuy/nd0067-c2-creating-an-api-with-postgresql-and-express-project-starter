@@ -105,6 +105,40 @@ export class BookStore {
         
     }
 
+    async update(book: Book) : Promise<void> {
+        try
+        {
+            // for now replace all values
+            // ideally only update specified values (do later)
+            
+            // to do: figure out error handling
+            // whole server is crashing when error thrown
+            const conn = await client.connect();
+            const sql :string = `UPDATE books SET title = "${book.title}", author="${book.author}", total_pages=${book.total_pages}, type="${book.type}", summary="${book.summary}" WHERE id = ${book.id}`;
+
+            const result = await client.query(sql);
+
+            // to figure out: how to get back id of added book
+
+            conn.release();
+
+            // to figure out: how to debug with debugger
+            // unbound breakpoint error, something to do with configuration
+
+            //console.log(JSON.stringify(result.rows[0]));
+
+            //return await result.rows[0].id; // is there a better way to do this?
+            return;
+        }
+        catch(err)
+        {
+            let message;
+            if(err instanceof Error) message = err.message;
+            else message = String(err);
+            throw new Error(message);
+        }
+    }
+
     // get a singular book based on id
     // todo: support richer searches
     // how to scale to all fields?"
