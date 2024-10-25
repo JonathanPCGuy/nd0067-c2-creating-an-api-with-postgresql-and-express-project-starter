@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import client from './database'
 import { PoolClient } from 'pg'
 import booksRoute from './routes/api/books/bookroute'
+import userRoutes from './handlers/users'
 
 
 const app: express.Application = express()
@@ -14,6 +15,7 @@ client.connect();
 app.use(bodyParser.json())
 
 app.use('/api/books', booksRoute);
+userRoutes(app);
 
 app.get('/', function (req: Request, res: Response) {
     //client.connect().then(func)

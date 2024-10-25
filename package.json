@@ -5,6 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "start": "npm run build && node dist/server",
+    "selfnote": "use yarn or not? also this is code smell",
     "build": "npx tsc",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
     "test": "npm run build && ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
@@ -13,6 +14,8 @@
   "author": "Udacity",
   "license": "ISC",
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.19.0",
     "db-migrate": "^0.11.14",
     "db-migrate-pg": "^1.5.2",
