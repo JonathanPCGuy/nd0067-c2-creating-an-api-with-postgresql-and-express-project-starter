@@ -18,7 +18,7 @@ const generateHash = async(pwd: string) : Promise<string>  => {
 
 export type User = {
     username: string;
-    pwd_digest: string;
+    pwd_digest?: string;
     id?: number
 }
 
@@ -64,7 +64,7 @@ export class UserStore {
     }
 
     // need to return something richer later
-    async create(username: string, password: string) : Promise<number> {
+    async create(username: string, password: string) : Promise<User> {
         // this is where i need to do the hashing
         
 
@@ -82,21 +82,26 @@ export class UserStore {
             // DO THIS LATER
 
             //const sql :string = "INSERT INTO users (username, pwd_digest) VALUES ($1, $2);";
-            const sql :string = "INSERT INTO users (username, pwd_digest) VALUES ($1, $2) returning id;";
+            const sql :string = "INSERT INTO users (username, pwd_digest) VALUES ($1, $2) returning *;";
 
 
             const result = await client.query(sql, [username, digest]);
 
             // to figure out: how to get back id of added book
+            // i think i have to do it manually
 
             conn.release();
 
             // to figure out: how to debug with debugger
             // unbound breakpoint error, something to do with configuration
             // it is being made but for some reason no values are coming out
+            let createdUser : User = {
+                username : result.rows[0].username,
+                id : result.rows[0].id
+            }
             console.log(JSON.stringify(result.rows[0]));
 
-            return await result.rows[0].id; // is there a better way to do this?
+            return createdUser; // is there a better way to do this?
         }
         catch(err)
         {
